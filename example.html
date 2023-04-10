@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SubLength Example</title>
+</head>
+<body>
+
+  <h1>Here is an example for the subLength code academy question</h1>
+
+  <label for="str">Enter a string to evaluate: &emsp; </label>
+  <input type="text" id="str" name="str">
+  <p>
+  <label for="char">Enter a character to search for:</label>
+  <input type="text" id="char" name="char" maxlength="1">
+  </p>
+  <button onclick="callSub()">Search</button>
+
+  <script>
+    function callSub(){
+      var char = document.getElementById("char").value;
+      var val = subLength();
+
+      if (val === 0){
+        alert("Could not find multiple instances of " + char);
+      } else {
+        alert("subLength returned " + val);
+      }
+    }
+
+    // Here you would pass in (str, char) as arguments, but I did this "quick and dirty"
+    function subLength() {
+      var str = document.getElementById("str").value;
+      var char = document.getElementById("char").value;
+
+      // Strings are arrays of chars, loop through each char until you get a match
+      for (var i = 0; i < str.length; i++) {
+        if (str[i] === char) {
+          // Starting from the first match, look at the rest of the characters one at a time
+          for (var j = i + 1; j < str.length; j++) {
+            // Evaluate if a match
+            if (str[j] === char) {
+              // Return the distance (inclusive) between the two
+              // Using the return keyword "ends" the function, so it will stop looping
+              return j - i + 1;
+            }
+          }
+        }
+      }
+
+      // No match found, return 0
+      return 0;
+
+    }
+  </script>
+
+</body>
+</html>
