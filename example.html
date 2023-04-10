@@ -16,9 +16,11 @@
   <button onclick="callSub()">Search</button>
 
   <script>
+    // This is just a seperate function to abstract out the call to subLength
     function callSub(){
+      var str = document.getElementById("str").value;
       var char = document.getElementById("char").value;
-      var val = subLength();
+      var val = subLength(str, char);
 
       if (val === 0){
         alert("Could not find multiple instances of " + char);
@@ -27,11 +29,8 @@
       }
     }
 
-    // Here you would pass in (str, char) as arguments, but I did this "quick and dirty"
-    function subLength() {
-      var str = document.getElementById("str").value;
-      var char = document.getElementById("char").value;
-
+    // This is the function you're making
+    function subLength(str, char) {
       // Strings are arrays of chars, loop through each char until you get a match
       for (var i = 0; i < str.length; i++) {
         if (str[i] === char) {
