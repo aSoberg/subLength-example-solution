@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SubLength Example</title>
+  <style>
+    #tile-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .tile {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      margin-right: 5px;
+      background-color: white;
+      text-align: center;
+      line-height: 30px;
+      font-weight: bold;
+      border: 4px solid black;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Here is an example for the subLength code academy question</h1>
+  
+  <p>
+    <label>Type in a word to search in, and a character to search for. 
+      <br> A visual demonstration will highlight the outer loop ("i loop") in green
+      <br> and the inner loop ("j loop") in blue.
+    </label>
+  </p>
+
+  <label for="str">Enter a string to evaluate: &emsp; </label>
+  <input type="text" id="str" name="str">
+  <p>
+    <label for="char">Enter a character to search for:</label>
+    <input type="text" id="char" name="char" maxlength="1">
+  </p>
+  <button onclick="callSub()">Search</button>
+
+  <script>
+    async function callSub(){
+      var char = document.getElementById("char").value;
+      var val = await subLength();
+
+      if (val === 0){
+        alert("Could not find multiple instances of " + char);
+      } else {
+        alert("subLength returned " + val);
+      }
+    }
+
+    // Here you would pass in (str, char) as arguments, but I did this "quick and dirty"
+    async function subLength() {
+      var str = document.getElementById("str").value;
+      var char = document.getElementById("char").value;
+
+      await generateTiles(str);
+
+      // Strings are arrays of chars, loop through each char until you get a match
+      for (var i = 0; i < str.length; i++) {
+
+        var iTile = document.getElementById("tile" + i);
+        iTile.style.border = "4px solid green";
+
+        // Slow things down so you can actually see what's happening
+        await delay(1000);
+
+        if (str[i] === char) {
+          iTile.style.backgroundColor =  "green";
+          // Starting from the first match, look at the rest of the characters one at a time
+          for (var j = i + 1; j < str.length; j++) {
+            // what we're looking at
+            var jTile = document.getElementById("tile" + j);
+            jTile.style.border = "4px solid blue";
+            // Slow things down so you can actually see what's happening
+            await delay(1000);
+            // Evaluate if a match
+            if (str[j] === char) {
+              // Return the distance (inclusive) between the two
+              // Using the return keyword "ends" the function, so it will stop looping
+              jTile.style.backgroundColor =  "green";
+              await delay(10);  // Give it a bit to render it's found
+              return j - i + 1;
+            } else {
+              jTile.style.border = "4px solid black";
+            }
+          }
+
+          await delay(10);  // Give it a bit to render it's not found
+          // You can exit the outer loop because there won't be another 'char' to find
+          return 0;
+        }
+
+        iTile.style.border = "4px solid black";
+      }
+
+      // No match found, return 0
+      return 0;
+
+    }
+
+    // Generate tiles for each letter in the string
+    function generateTiles(str) {
+      var tileContainer = document.createElement("div");
+      tileContainer.id = "tile-container";
+
+      // clear existing tiles, if any
+      var existingTiles = document.querySelectorAll(".tile");
+      existingTiles.forEach(function(tile) {
+        tile.parentNode.removeChild(tile);
+      });
+
+      var row = document.createElement("div"); // create a new row element
+
+      for (var i = 0; i < str.length; i++) {
+        var tile = document.createElement("div");
+        tile.className = "tile";
+        tile.id = "tile" + i;
+        tile.innerText = str[i];
+
+        row.appendChild(tile); // add the tile to the current row
+
+      }
+
+      tileContainer.appendChild(row); // add the row to the tile container
+
+      document.body.appendChild(tileContainer);
+    }
+
+    // Utility function to delay execution by a given number of milliseconds
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+  </script>
+
+</body>
+</html>
