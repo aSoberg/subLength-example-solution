@@ -43,9 +43,11 @@
   <button onclick="callSub()">Search</button>
 
   <script>
+    // This is just a seperate function to abstract out the call to subLength
     async function callSub(){
+      var str = document.getElementById("str").value;
       var char = document.getElementById("char").value;
-      var val = await subLength();
+      var val = await subLength(str, char);
 
       if (val === 0){
         alert("Could not find multiple instances of " + char);
@@ -54,10 +56,9 @@
       }
     }
 
-    // Here you would pass in (str, char) as arguments, but I did this "quick and dirty"
-    async function subLength() {
-      var str = document.getElementById("str").value;
-      var char = document.getElementById("char").value;
+    // Look at "Example.html" to understand the loop structure, 
+    // the visualization here is hacky and will make this look way more compilcated than it is
+    async function subLength(str, char) {
 
       await generateTiles(str);
 
